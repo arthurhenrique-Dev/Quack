@@ -5,6 +5,9 @@ import com.quack.quack_app.Application.Ports.Input.Reviews.UpdateReviewPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
 import com.quack.quack_app.Application.UseCases.Services.Review.ValidateReviewService;
 import com.quack.quack_app.Domain.Reviews.Review;
+import com.quack.quack_app.Domain.ValueObjects.Rating;
+
+import java.util.UUID;
 
 
 public class UpdateReviewUseCase implements UpdateReviewPort {
@@ -18,9 +21,9 @@ public class UpdateReviewUseCase implements UpdateReviewPort {
     }
 
     @Override
-    public void updateReview(DTOUpdateReview dtoUpdateReview) {
-        Review review = validateReviewService.validateReview(dtoUpdateReview.reviewId(), dtoUpdateReview.profileId());
-        review.updateReview(dtoUpdateReview.reviewContent());
+    public void updateReview(UUID reviewId, UUID profileId, String reviewContent) {
+        Review review = validateReviewService.validateReview(reviewId, profileId);
+        review.updateReview(reviewContent);
         repository.saveReview(review);
     }
 }

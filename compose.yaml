@@ -1,0 +1,55 @@
+services:
+  app:
+    build: .
+    container_name: quack_app
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://quack_db:5432/quack_db
+      - SPRING_DATA_MONGODB_UUID_REPRESENTATION=standard
+      - MONGO_HOST=quack_mongo
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+    networks:
+      - quack-network
+
+  postgres:
+    image: postgres:latest
+    container_name: quack_db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=quack_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d quack_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - quack-network
+    volumes:
+      - postgres_data:/var/lib/postgresql
+  mongodb:
+    image: mongo:latest
+    container_name: quack_mongo
+    ports:
+      - 27017:27017
+    restart: always
+    networks:
+      - quack-network
+    volumes:
+      - mongo_data:/data/db
+networks:
+  quack-network:
+    driver: bridge
+volumes:
+  postgres_data:
+  mongo_data:

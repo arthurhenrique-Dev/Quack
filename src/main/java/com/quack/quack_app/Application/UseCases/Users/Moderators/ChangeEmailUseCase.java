@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Users.Moderators;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.ChangeEmailPort;
+import com.quack.quack_app.Application.Ports.Input.Users.ChangeEmailPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ModeratorRepository;
 import com.quack.quack_app.Application.UseCases.Services.User.ChangeEmailService;
 import com.quack.quack_app.Domain.ValueObjects.Email;
@@ -21,13 +21,12 @@ public class ChangeEmailUseCase implements ChangeEmailPort {
 
 
     @Override
-    public void changeEmail(UUID id, Email email) {
+    public void changeEmail(UUID id, UUID token, Email email) {
         ChangeEmailService.execute(
-                id,
                 token,
                 email,
-                () -> repository.getModeratorById(id),
-                moderator -> repository.saveModerator(moderator),
+                ()-> repository.getModeratorById(id),
+                user-> repository.saveModerator(user),
                 log
         );
     }

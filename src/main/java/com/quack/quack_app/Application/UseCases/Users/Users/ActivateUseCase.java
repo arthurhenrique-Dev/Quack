@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Users.Users;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.ActivatePort;
+import com.quack.quack_app.Application.Ports.Input.Users.ActivatePort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.User.ActivationService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;

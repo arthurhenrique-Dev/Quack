@@ -23,11 +23,12 @@ public class Review {
         this.rating = rating;
     }
 
-    public Review(UUID userId, UUID gameId, UUID reviewId, LocalDate reviewDate, Rating rating, String review) {
+    public Review(UUID userId, UUID gameId, UUID reviewId, LocalDate reviewDate, Status status, Rating rating, String review) {
         this.userId = userId;
         this.gameId = gameId;
         this.reviewId = reviewId;
         this.reviewDate = reviewDate;
+        this.status = status;
         this.rating = rating;
         this.review = review;
     }

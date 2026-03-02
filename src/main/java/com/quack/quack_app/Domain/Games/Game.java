@@ -4,6 +4,7 @@ import com.quack.quack_app.Domain.ValueObjects.Rating;
 import com.quack.quack_app.Domain.ValueObjects.Reviews;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Game {
@@ -96,7 +97,10 @@ public class Game {
         return reviews;
     }
 
-    public Reviews getNormalReviews(){
+    public Reviews getNormalReviews() {
+        if (this.reviews == null) {
+            return null;
+        }
         return reviews.getActiveReviews();
     }
 }

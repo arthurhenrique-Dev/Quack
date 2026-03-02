@@ -7,19 +7,21 @@ import com.quack.quack_app.Domain.ValueObjects.Email;
 import org.slf4j.Logger;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ChangeEmailService {
 
-    public static <T extends BaseUser, X extends RuntimeException> void execute(
+    public static <T extends BaseUser> void execute(
+            UUID id,
             Email email,
             Supplier<Optional<T>> findAction,
             Consumer<T> saveAction,
             Logger log) {
         VerifyIfExistsModifyAndSaveService.execute(
                 findAction,
-                user -> user.changeEmail(email),
+                user -> user.checkAndChangeEmail(id, email),
                 ()-> new UserNotFoundException(),
                 saveAction,
                 log

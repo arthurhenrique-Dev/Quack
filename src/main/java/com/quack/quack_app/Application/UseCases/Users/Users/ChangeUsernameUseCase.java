@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Users.Users;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.ChangeUsernamePort;
+import com.quack.quack_app.Application.Ports.Input.Users.ChangeUsernamePort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.VerifyIfExistsModifyAndSaveService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;

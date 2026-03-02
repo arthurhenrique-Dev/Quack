@@ -1,8 +1,9 @@
 package com.quack.quack_app.Application.UseCases.Users.Moderators;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.ActivatePort;
+import com.quack.quack_app.Application.Ports.Input.Users.ActivatePort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ModeratorRepository;
 import com.quack.quack_app.Application.UseCases.Services.User.ActivationService;
+import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +22,9 @@ public class ActivateUseCase implements ActivatePort {
     @Override
     public void activate(UUID id) {
         ActivationService.execute(
-                id,
-                () -> repository.getModeratorById(id),
-                moderator -> repository.saveModerator(moderator),
+                ()-> repository.getModeratorById(id),
+                ()-> new UserNotFoundException(),
+                user -> repository.saveModerator(user),
                 logger
         );
     }

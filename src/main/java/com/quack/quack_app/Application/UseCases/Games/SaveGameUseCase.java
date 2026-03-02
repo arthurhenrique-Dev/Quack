@@ -4,7 +4,7 @@ import com.quack.quack_app.Application.DTOs.Games.DTOSaveGame;
 import com.quack.quack_app.Application.Mappers.Games.GameMapper;
 import com.quack.quack_app.Application.Ports.Input.Games.SaveGamePort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
-import com.quack.quack_app.Domain.Exceptions.ProcessingErrorException;
+import com.quack.quack_app.Application.UseCases.Services.TrySaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +22,10 @@ public class SaveGameUseCase implements SaveGamePort {
 
     @Override
     public void saveGame(DTOSaveGame dtoSaveGame) {
-        try {
-            repository.saveGame(gameMapper.ToRegister(dtoSaveGame));
-        } catch (Exception e) {
-            log.error("Persistence failure: Could not save game [{}]: ", dtoSaveGame.name(), e);
-            throw new ProcessingErrorException("Internal server error while saving the game.");
-        }
+        TrySaveService.execute(
+                gameMapper.ToRegister(dtoSaveGame),
+                repository::saveGame,
+                log
+        );
     }
 }

@@ -6,6 +6,5 @@ import java.util.UUID;
 
 public interface EmailService {
 
-    void ValidateEmail(Email email);
-    void UpdatePassword(UUID token, Email email);
+    void sendToken(String token, Email email, String subject);
 }

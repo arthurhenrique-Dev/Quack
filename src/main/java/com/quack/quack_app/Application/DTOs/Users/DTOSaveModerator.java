@@ -1,0 +1,7 @@
+package com.quack.quack_app.Application.DTOs.Users;
+
+import com.quack.quack_app.Domain.ValueObjects.Email;
+import com.quack.quack_app.Domain.ValueObjects.Password;
+
+public record DTOSaveModerator(Password password, Email email) {
+}

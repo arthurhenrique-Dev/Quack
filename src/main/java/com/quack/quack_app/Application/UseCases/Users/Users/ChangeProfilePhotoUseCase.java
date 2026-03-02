@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Users.Users;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.ChangeProfilePhotoPort;
+import com.quack.quack_app.Application.Ports.Input.Users.ChangeProfilePhotoPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.VerifyIfExistsModifyAndSaveService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
@@ -13,7 +13,11 @@ public class ChangeProfilePhotoUseCase implements ChangeProfilePhotoPort {
 
     private static final Logger log = LoggerFactory.getLogger(ChangeProfilePhotoUseCase.class);
 
-    private UserRepository repository;
+    private final UserRepository repository;
+
+    public ChangeProfilePhotoUseCase(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public void changeProfilePhoto(UUID idUser, String photoUrl) {

@@ -1,8 +1,9 @@
 package com.quack.quack_app.Application.UseCases.Users.Moderators;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.BanPort;
+import com.quack.quack_app.Application.Ports.Input.Users.BanPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ModeratorRepository;
 import com.quack.quack_app.Application.UseCases.Services.User.BanimentService;
+import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +22,9 @@ public class BanUseCase implements BanPort {
     @Override
     public void ban(UUID id) {
         BanimentService.execute(
-                id,
-                () -> repository.getModeratorById(id),
-                moderator -> repository.saveModerator(moderator),
+                ()-> repository.getModeratorById(id),
+                ()-> new UserNotFoundException(),
+                user -> repository.saveModerator(user),
                 log
         );
     }

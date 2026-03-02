@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Users.Users;
 
-import com.quack.quack_app.Application.Ports.Input.Users.Users.UnfollowPort;
+import com.quack.quack_app.Application.Ports.Input.Users.UnfollowPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.User.UserConnectionService;
 import org.slf4j.Logger;

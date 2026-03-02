@@ -1,10 +1,10 @@
 package com.quack.quack_app.Application.Ports.Input.Reviews;
 
-import com.quack.quack_app.Application.DTOs.Reviews.DTOUpdateRatingReview;
+import com.quack.quack_app.Domain.ValueObjects.Rating;
 
 import java.util.UUID;
 
 public interface UpdateRatingReviewPort {
 
-    void updateRatingReview(DTOUpdateRatingReview dtoUpdateRatingReview);
+    void updateRatingReview(UUID reviewId, UUID profileId, Rating rating);
 }
