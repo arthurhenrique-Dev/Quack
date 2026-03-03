@@ -4,15 +4,19 @@ import com.quack.quack_app.Application.DTOs.Games.DTOSearchGame;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
 import com.quack.quack_app.Domain.Games.Game;
 import com.quack.quack_app.Domain.ValueObjects.Natural;
+import com.quack.quack_app.Domain.ValueObjects.Rating;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Mappers.NoSQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.GameEntity;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Repositories.MongoGameRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +37,10 @@ public class GameRepositoryAdapter implements GameRepository {
 
     @Override
     public List<Game> getGames(DTOSearchGame dto, Natural pages, Natural size) {
+        if (dto == null || isSearchEmpty(dto)) {
+            dto = DTOSearchGame.defaultSearch();
+        }
+
         List<Criteria> filters = buildFilters(dto);
         List<AggregationOperation> operations = new ArrayList<>();
 
@@ -41,14 +49,13 @@ public class GameRepositoryAdapter implements GameRepository {
         }
 
         if (dto.rating() != null) {
-            operations.add(Aggregation.sort(org.springframework.data.domain.Sort.Direction.DESC, "rating.rate"));
+            operations.add(Aggregation.sort(Sort.Direction.DESC, "rating", "releaseDate"));
         } else {
-            operations.add(Aggregation.sort(org.springframework.data.domain.Sort.Direction.DESC, "releaseDate"));
+            operations.add(Aggregation.sort(Sort.Direction.DESC, "releaseDate"));
         }
 
         operations.add(Aggregation.skip((long) pages.i() * size.i()));
         operations.add(Aggregation.limit(size.i()));
-
         operations.addAll(getReviewAggregationSteps());
 
         return executeAggregation(operations);
@@ -63,7 +70,6 @@ public class GameRepositoryAdapter implements GameRepository {
         operations.addAll(getReviewAggregationSteps());
 
         var aggregation = Aggregation.newAggregation(GameEntity.class, operations);
-
         var results = mongoTemplate.aggregate(aggregation, "games", GameEntity.class);
 
         return results.getMappedResults()
@@ -81,7 +87,7 @@ public class GameRepositoryAdapter implements GameRepository {
     }
 
     private List<Game> executeAggregation(List<AggregationOperation> operations) {
-        return mongoTemplate.aggregate(Aggregation.newAggregation(operations), "games", GameEntity.class)
+        return mongoTemplate.aggregate(Aggregation.newAggregation(GameEntity.class, operations), "games", GameEntity.class)
                 .getMappedResults()
                 .stream()
                 .map(mapper::toDomain)
@@ -91,33 +97,44 @@ public class GameRepositoryAdapter implements GameRepository {
     private List<Criteria> buildFilters(DTOSearchGame dto) {
         List<Criteria> criteria = new ArrayList<>();
 
-        if (dto == null ||
-                (
-                    dto.id() == null &&
-                    dto.name() == null &&
-                    dto.genre() == null &&
-                    dto.releaseDate() == null &&
-                    dto.developer() == null &&
-                    dto.platforms() == null &&
-                    dto.publisher() == null &&
-                    dto.rating() == null
-                )
-            ) {
-            dto = DTOSearchGame.defaultSearch();
+        if (dto.id() != null) {
+            criteria.add(Criteria.where("_id").is(dto.id()));
+            return criteria;
         }
 
-        Optional.ofNullable(dto.id()).ifPresent(id -> criteria.add(Criteria.where("_id").is(id)));
-        Optional.ofNullable(dto.name()).filter(n -> !n.isBlank()).ifPresent(n -> criteria.add(Criteria.where("name").regex(n, "i")));
-        Optional.ofNullable(dto.genre()).filter(g -> !g.isBlank()).ifPresent(g -> criteria.add(Criteria.where("genre").regex(g, "i")));
-        Optional.ofNullable(dto.developer()).filter(d -> !d.isBlank()).ifPresent(d -> criteria.add(Criteria.where("developer").regex(d, "i")));
+        if (dto.name() != null && !dto.name().isBlank()) {
+            criteria.add(Criteria.where("name").regex(dto.name(), "i"));
+        }
 
-        Optional.ofNullable(dto.rating()).ifPresent(r -> criteria.add(Criteria.where("rating.rate").gte(r.rate())));
+        if (dto.genre() != null && !dto.genre().isBlank()) {
+            criteria.add(Criteria.where("genre").regex(dto.genre(), "i"));
+        }
 
-        Optional.ofNullable(dto.releaseDate()).ifPresent(date ->
-                criteria.add(Criteria.where("releaseDate").lte(date))
-        );
+        if (dto.rating() != null) {
+            criteria.add(Criteria.where("rating").lte(dto.rating()));
+        }
+
+        if (dto.developer() != null && !dto.developer().isBlank()) {
+            criteria.add(Criteria.where("developer").regex(dto.developer(), "i"));
+        }
+
+        if (dto.publisher() != null && !dto.publisher().isBlank()) {
+            criteria.add(Criteria.where("publisher").regex(dto.publisher(), "i"));
+        }
+
+        if (dto.releaseDate() != null) {
+            criteria.add(Criteria.where("releaseDate").lte(dto.releaseDate()));
+        }
 
         return criteria;
+    }
+
+    private boolean isSearchEmpty(DTOSearchGame dto) {
+        return dto.id() == null &&
+                (dto.name() == null || dto.name().isBlank()) &&
+                (dto.genre() == null || dto.genre().isBlank()) &&
+                dto.rating() == null &&
+                dto.releaseDate() == null;
     }
 
     @Override

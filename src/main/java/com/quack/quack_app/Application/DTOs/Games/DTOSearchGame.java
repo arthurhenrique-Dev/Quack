@@ -14,7 +14,7 @@ public record DTOSearchGame(
         String developer,
         String publisher,
         String platforms,
-        Rating rating
+        BigDecimal rating
 ) {
     public static DTOSearchGame defaultSearch(){
         return new DTOSearchGame(
@@ -25,7 +25,7 @@ public record DTOSearchGame(
                 null,
                 null,
                 null,
-                new Rating(new BigDecimal(5))
+                new BigDecimal(5)
         );
     }
 }

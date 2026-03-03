@@ -1,8 +1,6 @@
 package com.quack.quack_app.Infra.Adapters.Output.Persistence.SQL.Models;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,13 +17,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserEntity extends BaseEntity{
 
+    @Column(name = "username", columnDefinition = "TEXT")
     private String username;
     private String photoUrl;
     private String description;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> favoriteGames;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> friends;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<UUID> followers;
 }

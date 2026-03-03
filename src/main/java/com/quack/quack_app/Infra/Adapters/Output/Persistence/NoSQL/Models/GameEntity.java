@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
@@ -29,6 +31,7 @@ public class GameEntity {
     private String publisher;
     private String photoUrl;
     private String platforms;
+    @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal rating;
     private Reviews reviews;
 }

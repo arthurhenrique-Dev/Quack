@@ -47,19 +47,16 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity logIn(@RequestBody @Valid LoginRequest loginRequest) {
         try {
-            // 1. Extraia as Strings puras dos seus Value Objects
             String emailPuro = loginRequest.email().email();
             String senhaPura = loginRequest.password().password();
 
             System.out.println("Tentando login para: " + emailPuro);
 
-            // 2. Crie o token de autenticação apenas com as STRINGS
             var authCredentials = new UsernamePasswordAuthenticationToken(
                     emailPuro,
                     senhaPura
             );
 
-            // 3. O Manager agora vai comparar String com String (BCrypt funciona!)
             var authentication = authenticationManager.authenticate(authCredentials);
 
             var user = (UserDetailsImpl) authentication.getPrincipal();
@@ -86,7 +83,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @PostMapping("/check")
-    public ResponseEntity twoFACheck(UUID id, String token){
+    public ResponseEntity twoFACheck(@RequestBody UUID id, String token){
         check2FAUseCase.check2FA(id, token);
         return ResponseEntity.ok().build();
     }

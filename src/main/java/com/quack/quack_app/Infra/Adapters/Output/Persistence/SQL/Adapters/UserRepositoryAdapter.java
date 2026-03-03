@@ -39,7 +39,7 @@ public class UserRepositoryAdapter implements UserRepository {
 
         UUID idParam = dtoSearchUser.id();
 
-        String usernameParam = (dtoSearchUser.usename() != null) ? dtoSearchUser.usename().username() : null;
+        String usernameParam = (dtoSearchUser.usename() != null) ? dtoSearchUser.usename() : null;
 
         return jpaRepository.searchUsers(idParam, usernameParam, pageable)
                 .stream()

@@ -12,9 +12,11 @@ import java.util.UUID;
 
 public interface JpaUserRepository extends JpaRepository<UserEntity, UUID> {
 
-    @Query("SELECT u FROM UserEntity u WHERE " +
-            "(:id IS NULL OR u.id = :id) AND " +
-            "(:username IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', :username, '%')))")
+    @Query(value = """
+    SELECT * FROM users u
+    WHERE (:id IS NULL OR u.id = CAST(:id AS uuid))
+    AND (:username IS NULL OR LOWER(u.username) LIKE LOWER(CONCAT('%', CAST(:username AS text), '%')))
+    """, nativeQuery = true)
     List<UserEntity> searchUsers(
             @Param("id") UUID id,
             @Param("username") String username,
