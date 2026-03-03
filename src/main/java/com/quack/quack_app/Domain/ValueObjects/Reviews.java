@@ -23,16 +23,18 @@ public record Reviews(List<Review> reviews) {
         reviews.add(review);
     }
 
-    public Reviews getActiveReviews() {
-        List<Review> activeReviews = reviews.stream()
+    public Reviews filterActiveReviews() {
+        if (this.reviews == null) return new Reviews(new ArrayList<>());
+
+        return new Reviews(reviews.stream()
                 .filter(review -> review.getStatus() == Status.ON)
-                .toList();
-        return new Reviews(activeReviews);
+                .toList()
+        );
     }
 
     public void removeReview(UUID reviewId) {
         try {
-            getActiveReviews().reviews.stream()
+            filterActiveReviews().reviews.stream()
                     .filter(review -> review.getReviewId().equals(reviewId))
                     .findAny()
                     .orElseThrow(() -> new IllegalArgumentException("Review not found with id: " + reviewId))
@@ -44,7 +46,7 @@ public record Reviews(List<Review> reviews) {
     }
 
     public long getReviewCount() {
-        return getActiveReviews().reviews.size();
+        return filterActiveReviews().reviews.size();
     }
 
     public Rating actualRating() {
@@ -52,7 +54,7 @@ public record Reviews(List<Review> reviews) {
 
         if (count == 0) return null;
 
-        BigDecimal sum = getActiveReviews().reviews.stream()
+        BigDecimal sum = filterActiveReviews().reviews.stream()
                 .map(review -> review.getRating().rate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 

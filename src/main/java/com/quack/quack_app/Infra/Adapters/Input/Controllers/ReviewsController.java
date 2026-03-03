@@ -1,5 +1,6 @@
 package com.quack.quack_app.Infra.Adapters.Input.Controllers;
 
+import com.quack.quack_app.Application.DTOs.Reviews.DTOSaveReview;
 import com.quack.quack_app.Application.UseCases.Reviews.DeleteReviewUseCase;
 import com.quack.quack_app.Application.UseCases.Reviews.SaveReviewUseCase;
 import com.quack.quack_app.Application.UseCases.Reviews.UpdateRatingReviewUseCase;
@@ -31,7 +32,7 @@ public class ReviewsController {
         deleteReviewUseCase.DeleteReview(id);
     }
     @PostMapping()
-    public void saveReview(@RequestBody Review review) {
+    public void saveReview(@RequestBody DTOSaveReview review) {
         saveReviewUseCase.saveReviews(review);
     }
     @PutMapping("/{id}/rating_update/{idUser}")

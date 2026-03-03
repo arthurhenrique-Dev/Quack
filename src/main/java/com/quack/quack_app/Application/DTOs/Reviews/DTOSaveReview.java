@@ -1,16 +1,13 @@
 package com.quack.quack_app.Application.DTOs.Reviews;
 
 import com.quack.quack_app.Domain.ValueObjects.Rating;
-import com.quack.quack_app.Domain.ValueObjects.Username;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
-public record DTOReturnReview(
+public record DTOSaveReview(
 
-        Username username,
+        UUID userId,
         UUID gameId,
-        LocalDate reviewDate,
         Rating rating,
         String review
 ) {

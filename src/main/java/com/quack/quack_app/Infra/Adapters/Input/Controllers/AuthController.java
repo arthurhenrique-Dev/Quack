@@ -74,16 +74,16 @@ public class AuthController {
     }
     @PostMapping("/signUp")
     public ResponseEntity registerUser(@RequestBody DTOSaveUser dtoSaveUser){
-        String qrCodeUrl= saveUserUseCase.saveUser(dtoSaveUser);
+        String qrCodeUrl = saveUserUseCase.saveUser(dtoSaveUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(qrCodeUrl);
     }
     @PostMapping("/moderator/signUp")
     public ResponseEntity registerModerator(@RequestBody DTOSaveModerator dtoSaveModerator){
-        saveModeratorUseCase.saveModerator(dtoSaveModerator);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        String qrCodeUrl = saveModeratorUseCase.saveModerator(dtoSaveModerator);
+        return ResponseEntity.status(HttpStatus.CREATED).body(qrCodeUrl);
     }
     @PostMapping("/check")
-    public ResponseEntity twoFACheck(@RequestBody UUID id, String token){
+    public ResponseEntity twoFACheck(UUID id, String token){
         check2FAUseCase.check2FA(id, token);
         return ResponseEntity.ok().build();
     }

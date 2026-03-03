@@ -3,11 +3,14 @@ package com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Mappers;
 import com.quack.quack_app.Domain.Games.Game;
 import com.quack.quack_app.Domain.Reviews.Review;
 import com.quack.quack_app.Domain.ValueObjects.Rating;
+import com.quack.quack_app.Domain.ValueObjects.Reviews;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.GameEntity;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.ReviewEntity;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class NoSQLMapper {
@@ -18,20 +21,25 @@ public class NoSQLMapper {
 
         return new GameEntity(
                 domain.getId(),
-                domain.getName(),
-                domain.getDescription(),
+                ratingValue,
+                domain.getPlatforms(),
+                domain.getPhotoUrl(),
+                domain.getPublisher(),
+                domain.getDeveloper(),
                 domain.getReleaseDate(),
                 domain.getGenre(),
-                domain.getDeveloper(),
-                domain.getPublisher(),
-                domain.getPhotoUrl(),
-                domain.getPlatforms(),
-                ratingValue,
-                domain.getReviews()
+                domain.getDescription(),
+                domain.getName()
         );
     }
 
     public Game toDomain(GameEntity entity) {
+
+        Reviews reviews = (entity.getReviewsList() != null)
+                ? new Reviews(new ArrayList<>(entity.getReviewsList().stream()
+                .map(this::toDomain)
+                .toList()))
+                : Reviews.Start();
 
         return new Game(
                 entity.getId(),
@@ -44,7 +52,7 @@ public class NoSQLMapper {
                 entity.getPhotoUrl(),
                 entity.getPlatforms(),
                 new Rating(entity.getRating()),
-                entity.getReviews()
+                reviews
         );
     }
 

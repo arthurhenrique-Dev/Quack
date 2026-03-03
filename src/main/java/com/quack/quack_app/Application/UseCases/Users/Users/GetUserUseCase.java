@@ -41,7 +41,7 @@ public class GetUserUseCase implements GetUserPort {
                 ()-> reviewRepository.getReviews(idUser),
                 log
         );
-        var reviewsMapped = reviews.getActiveReviews()
+        var reviewsMapped = reviews.filterActiveReviews()
                 .reviews()
                 .stream()
                 .map(r-> reviewMapper.dtoReturnReview(r, user.getUsername()))

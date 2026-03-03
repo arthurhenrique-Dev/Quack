@@ -46,8 +46,8 @@ public class Config {
         return new UserRepositoryAdapter(jpaUserRepository, encryptor, sqlMapper);
     }
     @Bean
-    ModeratorRepository moderatorRepository(JpaModeratorRepository jpaModeratorRepository, AesEncryptor encryptor, SQLMapper sqlMapper) {
-        return new ModeratorRepositoryAdapter(jpaModeratorRepository, encryptor, sqlMapper);
+    ModeratorRepository moderatorRepository(JpaModeratorRepository jpaModeratorRepository, SQLMapper sqlMapper) {
+        return new ModeratorRepositoryAdapter(jpaModeratorRepository, sqlMapper);
     }
     @Bean
     GameRepository gameRepository(MongoGameRepository mongoGameRepository, NoSQLMapper noSQLMapper, MongoTemplate mongoTemplate) {
@@ -98,8 +98,8 @@ public class Config {
         return new DeleteReviewUseCase(reviewRepository);
     }
     @Bean
-    SaveReviewUseCase saveReviewUseCase(ReviewRepository reviewRepository){
-        return new SaveReviewUseCase(reviewRepository);
+    SaveReviewUseCase saveReviewUseCase(ReviewRepository reviewRepository, GameRepository gameRepository, UserRepository userRepository, ReviewMapper reviewMapper){
+        return new SaveReviewUseCase(reviewRepository, gameRepository, userRepository, reviewMapper);
     }
     @Bean
     ValidateReviewService validateReviewService(ReviewRepository reviewRepository, UserRepository userRepository){

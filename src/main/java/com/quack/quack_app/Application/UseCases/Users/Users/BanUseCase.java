@@ -34,7 +34,7 @@ public class BanUseCase implements BanPort {
         );
         try {
             reviewRepository.getReviews(id)
-                    .getActiveReviews()
+                    .filterActiveReviews()
                     .reviews()
                     .forEach(review -> {
                         review.removeReview();

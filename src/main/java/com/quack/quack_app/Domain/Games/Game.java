@@ -1,5 +1,6 @@
 package com.quack.quack_app.Domain.Games;
 
+import com.quack.quack_app.Domain.Reviews.Review;
 import com.quack.quack_app.Domain.ValueObjects.Rating;
 import com.quack.quack_app.Domain.ValueObjects.Reviews;
 
@@ -32,7 +33,7 @@ public class Game {
         this.photoUrl = photoUrl;
         this.platforms = platforms;
         this.rating = rating;
-        this.reviews = reviews;
+        this.reviews = (reviews != null) ? reviews : Reviews.Start();
     }
 
     public Game(String name, String description, LocalDate releaseDate, String genre, String developer, String publisher, String photoUrl, String platforms) {
@@ -47,6 +48,10 @@ public class Game {
         this.platforms = platforms;
         this.reviews = Reviews.Start();
         this.rating = this.reviews.actualRating();
+    }
+
+    public void addReview(Review review){
+        this.reviews.addReview(review);
     }
 
     public void updateRating(){
@@ -99,8 +104,8 @@ public class Game {
 
     public Reviews getNormalReviews() {
         if (this.reviews == null) {
-            return null;
+            return new Reviews(new ArrayList<>());
         }
-        return reviews.getActiveReviews();
+        return reviews.filterActiveReviews();
     }
 }

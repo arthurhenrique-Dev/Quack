@@ -8,7 +8,6 @@ import com.quack.quack_app.Application.Ports.Input.Users.SearchUsersPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.TryGetService;
-import com.quack.quack_app.Domain.Users.User;
 import com.quack.quack_app.Domain.ValueObjects.Natural;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +38,7 @@ public class SearchUsersUseCase implements SearchUsersPort {
         users.stream()
                 .forEach(u-> {
                     var reviews = TryGetService.execute(()-> reviewRepository.getReviews(u.getId()), log);
-                    var reviewsMapped = reviews.getActiveReviews()
+                    var reviewsMapped = reviews.filterActiveReviews()
                             .reviews()
                             .stream()
                             .map(r-> reviewMapper.dtoReturnReview(r, u.getUsername()))

@@ -12,12 +12,12 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Document(collection = "games")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class GameEntity {
 
@@ -33,5 +33,19 @@ public class GameEntity {
     private String platforms;
     @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal rating;
-    private Reviews reviews;
+    @Field("reviewsList")
+    private List<ReviewEntity> reviewsList;
+
+    public GameEntity(UUID id, BigDecimal rating, String platforms, String photoUrl, String publisher, String developer, LocalDate releaseDate, String genre, String description, String name) {
+        this.id = id;
+        this.rating = rating;
+        this.platforms = platforms;
+        this.photoUrl = photoUrl;
+        this.publisher = publisher;
+        this.developer = developer;
+        this.releaseDate = releaseDate;
+        this.genre = genre;
+        this.description = description;
+        this.name = name;
+    }
 }

@@ -5,7 +5,6 @@ import com.quack.quack_app.Domain.Users.Moderator;
 import com.quack.quack_app.Domain.ValueObjects.Email;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.SQL.Mappers.SQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.SQL.Repositories.JpaModeratorRepository;
-import com.quack.quack_app.Infra.Security.Service.AesEncryptor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -15,12 +14,10 @@ import java.util.UUID;
 public class ModeratorRepositoryAdapter implements ModeratorRepository {
 
     private final JpaModeratorRepository jpaRepository;
-    private final AesEncryptor aesEncryptor;
     private final SQLMapper mapper;
 
-    public ModeratorRepositoryAdapter(JpaModeratorRepository jpaRepository, AesEncryptor aesEncryptor, SQLMapper mapper) {
+    public ModeratorRepositoryAdapter(JpaModeratorRepository jpaRepository, SQLMapper mapper) {
         this.jpaRepository = jpaRepository;
-        this.aesEncryptor = aesEncryptor;
         this.mapper = mapper;
     }
 
