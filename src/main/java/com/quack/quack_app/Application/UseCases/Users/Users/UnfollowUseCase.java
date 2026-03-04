@@ -2,7 +2,7 @@ package com.quack.quack_app.Application.UseCases.Users.Users;
 
 import com.quack.quack_app.Application.Ports.Input.Users.UnfollowPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
-import com.quack.quack_app.Application.UseCases.Services.User.UserConnectionService;
+import com.quack.quack_app.Application.UseCases.Services.User.ConnectionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +20,11 @@ public class UnfollowUseCase implements UnfollowPort {
 
     @Override
     public void unfollow(UUID unfollower, UUID unfollowing) {
-        UserConnectionService.execute(
+        ConnectionService.execute(
                 unfollower,
                 unfollowing,
                 repository,
                 actor -> actor.unfollow(unfollowing),
-                target -> target.otherPartRemoveFriend(unfollower),
                 log
         );
     }

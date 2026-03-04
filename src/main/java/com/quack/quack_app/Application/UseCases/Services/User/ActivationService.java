@@ -17,7 +17,7 @@ public class ActivationService {
             Logger log) {
         VerifyIfExistsModifyAndSaveService.execute(
                 findAction,
-                T::activate,
+                u->u.activate(),
                 e,
                 saveAction,
                 log

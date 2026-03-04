@@ -98,8 +98,8 @@ public class Config {
         return new DeleteReviewUseCase(reviewRepository);
     }
     @Bean
-    SaveReviewUseCase saveReviewUseCase(ReviewRepository reviewRepository, GameRepository gameRepository, UserRepository userRepository, ReviewMapper reviewMapper){
-        return new SaveReviewUseCase(reviewRepository, gameRepository, userRepository, reviewMapper);
+    SaveReviewUseCase saveReviewUseCase(ReviewRepository reviewRepository, GameRepository gameRepository, UserRepository userRepository, ReviewMapper reviewMapper, EmailService emailService){
+        return new SaveReviewUseCase(reviewRepository, gameRepository, userRepository, reviewMapper, emailService);
     }
     @Bean
     ValidateReviewService validateReviewService(ReviewRepository reviewRepository, UserRepository userRepository){
@@ -158,8 +158,8 @@ public class Config {
         return new GetUserUseCase(userRepository, reviewRepository, userMapper, reviewMapper);
     }
     @Bean
-    SaveUserUseCase saveUserUseCase(UserRepository userRepository, UserMapper userMapper, TwoFAService twoFAService, EmailService emailService){
-        return new SaveUserUseCase(userRepository, userMapper, twoFAService, emailService);
+    SaveUserUseCase saveUserUseCase(UserRepository userRepository, UserMapper userMapper, TwoFAService twoFAService){
+        return new SaveUserUseCase(userRepository, userMapper, twoFAService);
     }
     @Bean
     SearchUsersUseCase searchUsersUseCase(UserRepository userRepository, ReviewRepository reviewRepository, UserMapper userMapper, ReviewMapper reviewMapper){
@@ -206,7 +206,7 @@ public class Config {
         return new com.quack.quack_app.Application.UseCases.Users.Moderators.Check2FAUseCase(moderatorRepository, twoFAService);
     }
     @Bean
-    SaveModeratorUseCase saveModeratorUseCase(ModeratorRepository moderatorRepository, ModeratorMapper moderatorMapper, TwoFAService twoFAService, EmailService emailService){
-        return new SaveModeratorUseCase(moderatorRepository, moderatorMapper, twoFAService, emailService);
+    SaveModeratorUseCase saveModeratorUseCase(ModeratorRepository moderatorRepository, ModeratorMapper moderatorMapper, TwoFAService twoFAService){
+        return new SaveModeratorUseCase(moderatorRepository, moderatorMapper, twoFAService);
     }
 }

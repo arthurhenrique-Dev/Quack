@@ -17,7 +17,6 @@ public class SaveService {
             Supplier<Optional<T>> checkMethod,
             TwoFAService service,
             Consumer<T> saveMethod,
-            Consumer<T> sendEmailMethod,
             Logger logger
     ) {
 
@@ -38,13 +37,6 @@ public class SaveService {
 
             user.prepareTwoFA(secret);
             saveMethod.accept(user);
-
-            try {
-                sendEmailMethod.accept(user);
-                logger.info("E-mail de verificação enviado para: {}", user.getEmail().email());
-            } catch (Exception e) {
-                logger.error("Falha ao enviar e-mail, mas usuário foi salvo", e);
-            }
 
             return service.getQrCodeUrl(secret, user.getId());
         }

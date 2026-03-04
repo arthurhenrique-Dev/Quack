@@ -15,7 +15,7 @@ public class EmailServiceAdapter implements EmailService {
     }
 
     @Override
-    public void sendToken(String token, Email email, String subject) {
+    public void send(String token, Email email, String subject) {
 
         SimpleMailMessage message = new SimpleMailMessage();
 

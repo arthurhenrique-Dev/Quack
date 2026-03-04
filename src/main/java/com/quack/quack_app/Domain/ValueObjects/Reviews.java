@@ -58,6 +58,6 @@ public record Reviews(List<Review> reviews) {
                 .map(review -> review.getRating().rate())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        return new Rating(sum.divide(BigDecimal.valueOf(count), 2, RoundingMode.HALF_UP));
+        return new Rating(sum.divide(BigDecimal.valueOf(count), 1, RoundingMode.HALF_UP));
     }
 }

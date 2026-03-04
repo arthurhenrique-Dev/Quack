@@ -50,12 +50,7 @@ public class User extends BaseUser{
         }
         this.followers.addConnection(uuid);
     }
-    public void otherPartAddFriend(UUID uuid){
-        this.friends.addConnection(uuid);
-    }
-    public void otherPartRemoveFriend(UUID uuid){
-        this.friends.removeConnection(uuid);
-    }
+
     public void unfollow(UUID uuid){
         if (this.followers.connections().contains(uuid)){
             this.friends.removeConnection(uuid);

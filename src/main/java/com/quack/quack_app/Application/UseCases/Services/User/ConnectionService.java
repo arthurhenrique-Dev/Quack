@@ -10,25 +10,27 @@ import org.slf4j.Logger;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class UserConnectionService {
+public class ConnectionService {
 
     public static void execute(
             UUID actorId,
             UUID targetId,
             UserRepository repository,
-            Consumer<User> actionActor,
             Consumer<User> actionTarget,
             Logger log
     ) {
-        User actor = TryGetByIdService.execute(()-> repository.getUserById(actorId), UserNotFoundException::new, log);
-        User target = TryGetByIdService.execute(()-> repository.getUserById(targetId), UserNotFoundException::new, log);
+        TryGetByIdService.execute(
+                () -> repository.getUserById(actorId),
+                UserNotFoundException::new,
+                log
+        );
+        User target = TryGetByIdService.execute(
+                () -> repository.getUserById(targetId),
+                UserNotFoundException::new,
+                log
+        );
 
-        actionActor.accept(actor);
-        TrySaveService.execute(actor, repository::saveUser, log);
-
-        if (target.getFollowers().connections().contains(actorId)){
-            actionTarget.accept(target);
-            TrySaveService.execute(target, repository::saveUser, log);
-        }
+        actionTarget.accept(target);
+        TrySaveService.execute(target, repository::saveUser, log);
     }
 }

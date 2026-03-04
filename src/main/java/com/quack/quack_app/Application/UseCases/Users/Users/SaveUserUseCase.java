@@ -18,13 +18,11 @@ public class SaveUserUseCase implements SaveUserPort {
     private final UserRepository repository;
     private final UserMapper mapper;
     private final TwoFAService twoFAService;
-    private final EmailService emailService;
 
-    public SaveUserUseCase(UserRepository repository, UserMapper mapper, TwoFAService twoFAService, EmailService emailService) {
+    public SaveUserUseCase(UserRepository repository, UserMapper mapper, TwoFAService twoFAService) {
         this.repository = repository;
         this.mapper = mapper;
         this.twoFAService = twoFAService;
-        this.emailService = emailService;
     }
 
     @Override
@@ -40,7 +38,6 @@ public class SaveUserUseCase implements SaveUserPort {
                 () -> repository.getUserByEmail(dto.email()),
                 this.twoFAService,
                 repository::saveUser,
-                (u)-> emailService.sendToken(u.getTwoFA().secret(), u.getEmail(), "2 factor authentication"),
                 log
         );
     }

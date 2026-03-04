@@ -25,7 +25,7 @@ public record DTOSearchGame(
                 null,
                 null,
                 null,
-                new BigDecimal(5)
+                new BigDecimal(10)
         );
     }
 }

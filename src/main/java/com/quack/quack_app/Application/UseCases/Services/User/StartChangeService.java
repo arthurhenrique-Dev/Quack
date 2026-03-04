@@ -42,7 +42,7 @@ public class StartChangeService {
                 throw e;
             }
 
-            emailService.sendToken(updater.token(), user.getEmail(), emailSubject);
+            emailService.send(updater.token(), user.getEmail(), emailSubject);
 
             saveMethod.accept(user);
 

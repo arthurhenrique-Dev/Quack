@@ -17,7 +17,7 @@ public class BanimentService {
             Logger log) {
         VerifyIfExistsModifyAndSaveService.execute(
                 findAction,
-                T::ban,
+                u->u.ban(),
                 e,
                 saveAction,
                 log

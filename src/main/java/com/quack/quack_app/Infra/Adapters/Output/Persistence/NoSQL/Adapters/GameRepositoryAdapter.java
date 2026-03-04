@@ -4,7 +4,6 @@ import com.quack.quack_app.Application.DTOs.Games.DTOSearchGame;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
 import com.quack.quack_app.Domain.Games.Game;
 import com.quack.quack_app.Domain.ValueObjects.Natural;
-import com.quack.quack_app.Domain.ValueObjects.Rating;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Mappers.NoSQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.GameEntity;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Repositories.MongoGameRepository;
@@ -15,8 +14,6 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

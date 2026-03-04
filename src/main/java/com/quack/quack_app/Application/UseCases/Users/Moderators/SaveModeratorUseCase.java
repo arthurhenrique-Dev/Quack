@@ -17,13 +17,11 @@ public class SaveModeratorUseCase implements SaveModeratorPort {
     private final ModeratorRepository repository;
     private final ModeratorMapper mapper;
     private final TwoFAService twoFAService;
-    private final EmailService emailService;
 
-    public SaveModeratorUseCase(ModeratorRepository repository, ModeratorMapper mapper, TwoFAService twoFAService, EmailService emailService) {
+    public SaveModeratorUseCase(ModeratorRepository repository, ModeratorMapper mapper, TwoFAService twoFAService) {
         this.repository = repository;
         this.mapper = mapper;
         this.twoFAService = twoFAService;
-        this.emailService = emailService;
     }
 
     @Override
@@ -33,7 +31,6 @@ public class SaveModeratorUseCase implements SaveModeratorPort {
                 () -> repository.getModeratorByEmail(moderator.email()),
                 this.twoFAService,
                 repository::saveModerator,
-                (u)-> emailService.sendToken(u.getTwoFA().secret(), u.getEmail(), "2 factor authentication"),
                 log
         );
     }
