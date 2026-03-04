@@ -7,8 +7,8 @@ import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.Ports.Output.Services.EmailService;
-import com.quack.quack_app.Application.UseCases.Services.TryGetService;
-import com.quack.quack_app.Application.UseCases.Services.TrySaveService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TrySaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

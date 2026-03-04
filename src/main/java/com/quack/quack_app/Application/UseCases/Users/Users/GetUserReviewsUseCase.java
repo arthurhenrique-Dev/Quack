@@ -2,15 +2,13 @@ package com.quack.quack_app.Application.UseCases.Users.Users;
 
 import com.quack.quack_app.Application.DTOs.Reviews.DTOReturnReview;
 import com.quack.quack_app.Application.Mappers.Reviews.ReviewMapper;
-import com.quack.quack_app.Application.Mappers.Users.UserMapper;
 import com.quack.quack_app.Application.Ports.Input.Users.GetUserReviewsPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
-import com.quack.quack_app.Application.UseCases.Services.TryGetByIdService;
-import com.quack.quack_app.Application.UseCases.Services.TryGetService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetByIdService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import com.quack.quack_app.Domain.ValueObjects.Natural;
-import com.quack.quack_app.Domain.ValueObjects.Reviews;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

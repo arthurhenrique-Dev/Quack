@@ -99,6 +99,33 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<excludes>
+								<exclude>com/quack/quack_app/Infra/Configuration/**</exclude>
+								<exclude>com/quack/quack_app/Infra/Security/**</exclude>
+								<exclude>com/quack/quack_app/Infra/Adapters/Input/Controllers/**</exclude>
+								<exclude>com/quack/quack_app/Output/Gateways/**</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

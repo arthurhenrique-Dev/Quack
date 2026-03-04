@@ -1,7 +1,7 @@
 package com.quack.quack_app.Application.UseCases.Services.User;
 
 import com.quack.quack_app.Application.Ports.Output.Services.EmailService;
-import com.quack.quack_app.Application.UseCases.Services.TryGetByIdService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetByIdService;
 import com.quack.quack_app.Domain.Exceptions.ProcessingErrorException;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import com.quack.quack_app.Domain.Exceptions.ValidationFailedException;

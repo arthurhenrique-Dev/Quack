@@ -4,7 +4,7 @@ import com.quack.quack_app.Application.DTOs.Games.DTOSaveGame;
 import com.quack.quack_app.Application.Mappers.Games.GameMapper;
 import com.quack.quack_app.Application.Ports.Input.Games.SaveGamePort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
-import com.quack.quack_app.Application.UseCases.Services.TrySaveService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TrySaveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

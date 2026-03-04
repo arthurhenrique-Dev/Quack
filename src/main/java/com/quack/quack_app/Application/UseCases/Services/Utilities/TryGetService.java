@@ -1,9 +1,8 @@
-package com.quack.quack_app.Application.UseCases.Services;
+package com.quack.quack_app.Application.UseCases.Services.Utilities;
 
 import com.quack.quack_app.Domain.Exceptions.ProcessingErrorException;
 import org.slf4j.Logger;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class TryGetService {

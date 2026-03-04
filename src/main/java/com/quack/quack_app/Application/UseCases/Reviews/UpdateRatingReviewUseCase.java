@@ -1,6 +1,5 @@
 package com.quack.quack_app.Application.UseCases.Reviews;
 
-import com.quack.quack_app.Application.DTOs.Reviews.DTOUpdateRatingReview;
 import com.quack.quack_app.Application.Ports.Input.Reviews.UpdateRatingReviewPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
 import com.quack.quack_app.Application.UseCases.Services.Review.ValidateReviewService;

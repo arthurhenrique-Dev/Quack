@@ -2,7 +2,7 @@ package com.quack.quack_app.Application.UseCases.Reviews;
 
 import com.quack.quack_app.Application.Ports.Input.Reviews.DeleteReviewPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
-import com.quack.quack_app.Application.UseCases.Services.VerifyIfExistsModifyAndSaveService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.VerifyIfExistsModifyAndSaveService;
 import com.quack.quack_app.Domain.Exceptions.InvalidDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

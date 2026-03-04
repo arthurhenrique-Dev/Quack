@@ -1,6 +1,6 @@
 package com.quack.quack_app.Application.UseCases.Services.User;
 
-import com.quack.quack_app.Application.UseCases.Services.VerifyIfExistsModifyAndSaveService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.VerifyIfExistsModifyAndSaveService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import com.quack.quack_app.Domain.Users.BaseUser;
 import com.quack.quack_app.Domain.ValueObjects.Password;

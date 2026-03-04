@@ -1,8 +1,8 @@
 package com.quack.quack_app.Application.UseCases.Services.User;
 
 import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
-import com.quack.quack_app.Application.UseCases.Services.TryGetByIdService;
-import com.quack.quack_app.Application.UseCases.Services.TrySaveService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetByIdService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TrySaveService;
 import com.quack.quack_app.Domain.Exceptions.UserNotFoundException;
 import com.quack.quack_app.Domain.Users.User;
 import org.slf4j.Logger;

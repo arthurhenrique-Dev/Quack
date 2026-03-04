@@ -44,9 +44,9 @@ public class SQLMapper {
 
         String rawPassword = domain.getPassword().password();
         if (rawPassword.matches(BCRYPT_PATTERN)) {
-            entity.setPassword(rawPassword); // já é hash, usa direto
+            entity.setPassword(rawPassword);
         } else {
-            entity.setPassword(passwordEncoder.encode(rawPassword)); // encripta agora
+            entity.setPassword(passwordEncoder.encode(rawPassword));
         }
 
         entity.setEmail(domain.getEmail().email());

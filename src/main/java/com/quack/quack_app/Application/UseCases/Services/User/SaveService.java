@@ -29,13 +29,13 @@ public class SaveService {
             String secret;
             try {
                 secret = service.setupTwoFa();
+                user.prepareTwoFA(secret);
             } catch (Exception e) {
                 var pe = new ProcessingErrorException("Error setting up 2FA via External Service");
                 logger.error(pe.getMessage(), e);
                 throw pe;
             }
 
-            user.prepareTwoFA(secret);
             saveMethod.accept(user);
 
             return service.getQrCodeUrl(secret, user.getId());

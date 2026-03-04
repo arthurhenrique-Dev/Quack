@@ -2,7 +2,7 @@ package com.quack.quack_app.Application.UseCases.Games;
 
 import com.quack.quack_app.Application.Ports.Input.Games.GetGameByIdPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
-import com.quack.quack_app.Application.UseCases.Services.TryGetByIdService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetByIdService;
 import com.quack.quack_app.Domain.Exceptions.InvalidDataException;
 import com.quack.quack_app.Domain.Games.Game;
 import org.slf4j.Logger;

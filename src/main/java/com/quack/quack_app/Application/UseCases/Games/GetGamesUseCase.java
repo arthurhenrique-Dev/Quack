@@ -3,7 +3,7 @@ package com.quack.quack_app.Application.UseCases.Games;
 import com.quack.quack_app.Application.DTOs.Games.DTOSearchGame;
 import com.quack.quack_app.Application.Ports.Input.Games.GetGamesPort;
 import com.quack.quack_app.Application.Ports.Output.Repositories.GameRepository;
-import com.quack.quack_app.Application.UseCases.Services.TryGetService;
+import com.quack.quack_app.Application.UseCases.Services.Utilities.TryGetService;
 import com.quack.quack_app.Domain.Games.Game;
 import com.quack.quack_app.Domain.ValueObjects.Natural;
 import org.slf4j.Logger;

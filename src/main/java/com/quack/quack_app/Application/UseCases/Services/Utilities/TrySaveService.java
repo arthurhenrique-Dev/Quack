@@ -1,4 +1,4 @@
-package com.quack.quack_app.Application.UseCases.Services;
+package com.quack.quack_app.Application.UseCases.Services.Utilities;
 
 import com.quack.quack_app.Domain.Exceptions.ProcessingErrorException;
 import org.slf4j.Logger;
