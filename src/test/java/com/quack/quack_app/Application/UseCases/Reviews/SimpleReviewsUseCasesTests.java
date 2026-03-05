@@ -1,8 +1,10 @@
 package com.quack.quack_app.Application.UseCases.Reviews;
 
 import com.quack.quack_app.Application.Ports.Output.Repositories.ReviewRepository;
+import com.quack.quack_app.Application.Ports.Output.Repositories.UserRepository;
 import com.quack.quack_app.Application.UseCases.Services.Review.ValidateReviewService;
 import com.quack.quack_app.Domain.Reviews.Review;
+import com.quack.quack_app.Domain.Users.User;
 import com.quack.quack_app.Domain.ValueObjects.Rating;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,15 +23,20 @@ class SimpleReviewsUseCasesTests {
     @Mock private ReviewRepository reviewRepository;
     @Mock private ValidateReviewService validateReviewService;
     @Mock private Review reviewMock;
+    @Mock private UserRepository userRepository;
+    @Mock private User userMock;
 
     @Test
     @DisplayName("Deve deletar review")
     void testDeleteReview() {
         UUID reviewId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
         when(reviewRepository.getReview(reviewId)).thenReturn(Optional.of(reviewMock));
+        when(userRepository.getUserById(userId)).thenReturn(Optional.of(userMock));
 
-        new DeleteReviewUseCase(reviewRepository).DeleteReview(reviewId);
+        new DeleteReviewUseCase(reviewRepository, userRepository).DeleteReview(userId, reviewId);
 
+        verify(userRepository).getUserById(userId);
         verify(reviewMock).removeReview();
         verify(reviewRepository).saveReview(reviewMock);
     }

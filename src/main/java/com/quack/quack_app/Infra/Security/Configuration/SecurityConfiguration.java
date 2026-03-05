@@ -5,6 +5,7 @@ import com.quack.quack_app.Infra.Security.Filter.SecurityFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -29,8 +30,19 @@ public class SecurityConfiguration {
 
         return http
                 .csrf(csrf-> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.PUT, "/quack/user/customize/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/quack/user/customize/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/quack/user/follow/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/quack/user/unfollow/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/quack/review").hasRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/quack/review/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/quack/review/**").hasAnyRole("USER", "MODERATOR")
+                        .requestMatchers(HttpMethod.PUT, "/quack/management/**").hasRole("MODERATOR")
+                        .requestMatchers(HttpMethod.POST, "/quack/management/**").hasRole("MODERATOR")
+                        .requestMatchers(HttpMethod.DELETE, "/quack/management/**").hasRole("MODERATOR")
+                        .requestMatchers(HttpMethod.POST, "/quack/games").hasRole("MODERATOR")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -33,19 +33,3 @@ spring:
           auth: true
           starttls:
             enable: true
-
-server:
-  error:
-    include-message: always
-    include-stacktrace: always
-
-logging:
-  level:
-    root: INFO
-    com.quack.quack_app: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.web.authentication: DEBUG
-    org.springframework.security.authentication: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

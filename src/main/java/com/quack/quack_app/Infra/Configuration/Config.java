@@ -94,8 +94,8 @@ public class Config {
         return new SaveGameUseCase(gameMapper, gameRepository);
     }
     @Bean
-    DeleteReviewUseCase deleteReviewUseCase(ReviewRepository reviewRepository){
-        return new DeleteReviewUseCase(reviewRepository);
+    DeleteReviewUseCase deleteReviewUseCase(ReviewRepository reviewRepository, UserRepository userRepository){
+        return new DeleteReviewUseCase(reviewRepository, userRepository);
     }
     @Bean
     SaveReviewUseCase saveReviewUseCase(ReviewRepository reviewRepository, GameRepository gameRepository, UserRepository userRepository, ReviewMapper reviewMapper, EmailService emailService){

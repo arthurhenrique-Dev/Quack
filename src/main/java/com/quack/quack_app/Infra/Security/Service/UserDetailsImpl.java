@@ -37,8 +37,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
 
-//        return baseUser.getStatus() == Status.ACTIVE;
-        return true;
+        return baseUser.getStatus() == Status.ACTIVE;
     }
 
     public UUID getId() {

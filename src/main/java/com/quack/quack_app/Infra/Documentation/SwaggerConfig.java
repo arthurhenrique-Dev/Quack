@@ -14,6 +14,6 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("quack endpoints")
                         .version("1.0")
-                        .description("API documentation for TecBom application"));
+                        .description("API documentation for Quack application"));
     }
 }
