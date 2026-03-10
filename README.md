@@ -6,6 +6,7 @@
 ![JWT](https://img.shields.io/badge/JWT-Tokens-black?style=for-the-badge&logo=jsonwebtokens)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-SQL-336791?style=for-the-badge&logo=postgresql)
 ![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-47A248?style=for-the-badge&logo=mongodb)
+![Redis](https://img.shields.io/badge/Redis-Cache-DC382D?style=for-the-badge&logo=redis)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)
 ![Swagger](https://img.shields.io/badge/Swagger-OpenAPI%203-85EA2D?style=for-the-badge&logo=swagger)
 ![2FA](https://img.shields.io/badge/2FA-Google%20Authenticator-4285F4?style=for-the-badge&logo=google)
@@ -33,7 +34,7 @@ com.quack.quack_app/
 │   ├── Users/            # BaseUser, Role, Status
 │   └── ValueObjects/     # Email, Password, TokenUpdater...
 └── Infra/                # Adapters de entrada e saída
-    ├── Adapters/         # SQL (PostgreSQL), NoSQL (MongoDB), EmailGateway, TwoFAGateway
+    ├── Adapters/         # SQL (PostgreSQL), NoSQL (MongoDB), Cache (Redis), EmailGateway, TwoFAGateway
     ├── Configuration/
     ├── Documentation/    # Swagger Config
     └── Security/         # Spring Security, JWT, Filtros
@@ -69,11 +70,33 @@ A autenticação e autorização são implementadas com **Spring Security + JWT*
 | Segurança | Spring Security 6, JWT (Auth0) |
 | Banco Relacional | PostgreSQL + JPA/Hibernate |
 | Banco Não Relacional | MongoDB |
+| Cache | Redis + Spring Cache |
 | 2FA | Google Authenticator (`GoogleAuth`) |
 | E-mail | JavaMailSender + Mailtrap |
 | Documentação | Swagger / OpenAPI 3 |
 | Testes | JUnit 5 + Mockito |
 | Conteinerização | Docker + Docker Compose |
+
+---
+
+## ⚡ Cache com Redis
+
+O Quack utiliza **Redis** como camada de cache para reduzir a carga nos bancos de dados e melhorar a performance nas leituras mais frequentes.
+
+**Estratégia de cache:**
+- Entradas expiram automaticamente após **2 horas** (TTL configurável).
+- Cache é invalidado automaticamente em operações de escrita (`@CacheEvict`).
+- Serialização via **Jackson** com suporte a tipos polimórficos e Value Objects do domínio.
+
+**Caches ativos:**
+
+| Cache | Chave | Descrição |
+|---|---|---|
+| `users` | `id`, `email` | Perfis de usuários |
+| `moderators` | `id` | Perfis de moderadores |
+| `games` | `id` | Dados de jogos |
+| `reviews` | `id` | Reviews individuais |
+| `user_reviews` | `userId` | Lista de reviews por usuário |
 
 ---
 
@@ -86,7 +109,6 @@ O projeto é totalmente containerizado. Você precisa apenas do **Docker** insta
 git clone https://github.com/arthurhenrique-Dev/Quack.git
 cd Quack
 ```
-
 
 **2. Suba a aplicação:**
 ```bash
@@ -107,23 +129,23 @@ A documentação Swagger estará em `http://localhost:8080/swagger-ui.html`.
 | `POST` | `/login` | Login e geração de token JWT | Público |
 | `POST` | `/signUp` | Cadastro de usuário | Público |
 | `POST` | `/moderator/signUp` | Cadastro de moderador | Público |
-| `POST` | `/check` | Validação 2FA de usuário | Público |
-| `POST` | `/management/check` | Validação 2FA de moderador | Público |
+| `PATCH` | `/check` | Validação 2FA de usuário | Público |
+| `PATCH` | `/management/check` | Validação 2FA de moderador | Público |
 
 ### 👤 Usuários (`/quack/user`)
 
 | Método | Endpoint | Descrição | Acesso |
 |---|---|---|---|
 | `GET` | `/{id}` | Buscar perfil de usuário | Público |
-| `GET` | `/` | Buscar usuários por filtro | Público |
+| `GET` |  | Buscar usuários por filtro | Público |
 | `GET` | `/{id}/reviews` | Listar reviews de um usuário | Público |
-| `PUT` | `/customize/photo` | Alterar foto de perfil | USER |
-| `PUT` | `/customize/description` | Alterar descrição | USER |
-| `PUT` | `/customize/username` | Alterar username | USER |
-| `PUT` | `/customize/email/send` | Solicitar troca de email | USER |
-| `PUT` | `/customize/email/confirm/{token}` | Confirmar troca de email | USER |
-| `PUT` | `/customize/password/send` | Solicitar troca de senha | USER |
-| `PUT` | `/customize/password/confirm/{token}` | Confirmar troca de senha | USER |
+| `PATCH` | `/customize/photo` | Alterar foto de perfil | USER |
+| `PATCH` | `/customize/description` | Alterar descrição | USER |
+| `PATCH` | `/customize/username` | Alterar username | USER |
+| `PATCH` | `/customize/email/send` | Solicitar troca de email | USER |
+| `PATCH` | `/customize/email/confirm/{token}` | Confirmar troca de email | USER |
+| `PATCH` | `/customize/password/send` | Solicitar troca de senha | USER |
+| `PATCH` | `/customize/password/confirm/{token}` | Confirmar troca de senha | USER |
 | `POST` | `/follow/{id}` | Seguir usuário | USER |
 | `DELETE` | `/unfollow/{id}` | Deixar de seguir usuário | USER |
 | `DELETE` | `/customize/delete` | Deletar própria conta | USER |
@@ -132,9 +154,9 @@ A documentação Swagger estará em `http://localhost:8080/swagger-ui.html`.
 
 | Método | Endpoint | Descrição | Acesso |
 |---|---|---|---|
-| `POST` | `/` | Criar review | USER |
-| `PUT` | `/{id}/review_update` | Atualizar texto da review | USER |
-| `PUT` | `/{id}/rating_update` | Atualizar nota da review | USER |
+| `POST` |  | Criar review | USER |
+| `PATCH` | `/{id}/review_update` | Atualizar texto da review | USER |
+| `PATCH` | `/{id}/rating_update` | Atualizar nota da review | USER |
 | `DELETE` | `/{id}` | Deletar review | USER, MODERATOR |
 
 ### 🎮 Jogos (`/quack/games`)
@@ -142,22 +164,22 @@ A documentação Swagger estará em `http://localhost:8080/swagger-ui.html`.
 | Método | Endpoint | Descrição | Acesso |
 |---|---|---|---|
 | `GET` | `/{id}` | Buscar jogo por id | Público |
-| `GET` | `/` | Buscar jogos por filtro | Público |
-| `POST` | `/` | Cadastrar novo jogo | MODERATOR |
+| `GET` |  | Buscar jogos por filtro | Público |
+| `POST` |  | Cadastrar novo jogo | MODERATOR |
 
 ### 🛡️ Moderação (`/quack/management`)
 
 | Método | Endpoint | Descrição | Acesso |
 |---|---|---|---|
-| `POST` | `/users/{id}/activate` | Ativar usuário | MODERATOR |
+| `PATCH` | `/users/{id}/activate` | Ativar usuário | MODERATOR |
 | `DELETE` | `/users/{id}/ban` | Banir usuário | MODERATOR |
-| `POST` | `/moderators/{id}/activate` | Ativar moderador | MODERATOR |
+| `PATCH` | `/moderators/{id}/activate` | Ativar moderador | MODERATOR |
 | `DELETE` | `/moderators/{id}/ban` | Banir moderador | MODERATOR |
 | `DELETE` | `/moderators/review/{idReview}/userid/{idUser}` | Deletar review de usuário | MODERATOR |
-| `PUT` | `/customize/email/send` | Solicitar troca de email | MODERATOR |
-| `PUT` | `/customize/email/confirm/{token}` | Confirmar troca de email | MODERATOR |
-| `PUT` | `/customize/password/send` | Solicitar troca de senha | MODERATOR |
-| `PUT` | `/customize/password/confirm/{token}` | Confirmar troca de senha | MODERATOR |
+| `PATCH` | `/customize/email/send` | Solicitar troca de email | MODERATOR |
+| `PATCH` | `/customize/email/confirm/{token}` | Confirmar troca de email | MODERATOR |
+| `PATCH` | `/customize/password/send` | Solicitar troca de senha | MODERATOR |
+| `PATCH` | `/customize/password/confirm/{token}` | Confirmar troca de senha | MODERATOR |
 
 ---
 
@@ -165,15 +187,15 @@ A documentação Swagger estará em `http://localhost:8080/swagger-ui.html`.
 
 Testes unitários implementados com **JUnit 5** e **Mockito**, com foco na camada de Application (casos de uso), onde a lógica de negócio é mais crítica e os adapters de infraestrutura são mockados.
 
-
 ---
 
 ## 🗄️ Infraestrutura
 
-O `docker-compose.yaml` sobe três serviços automaticamente:
+O `docker-compose.yaml` sobe quatro serviços automaticamente:
 
 - **`quack_app`** — A aplicação Spring Boot
 - **`quack_db`** — PostgreSQL para dados relacionais (usuários, moderadores, follows)
 - **`quack_mongo`** — MongoDB para catálogo de jogos e reviews
+- **`quack_cache`** — Redis para cache de leituras frequentes
 
 O app aguarda o PostgreSQL estar saudável (`healthcheck`) antes de iniciar, evitando falhas de conexão na inicialização.
