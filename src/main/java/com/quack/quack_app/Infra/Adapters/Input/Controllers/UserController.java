@@ -36,7 +36,7 @@ public class UserController {
     private final BanUseCase banUseCase;
 
 
-    @PutMapping("/customize/photo")
+    @PatchMapping("/customize/photo")
     @Operation(summary = "change photo", description = "requisition that update a user photo")
     @ApiResponse(responseCode = "200", description = "user saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -47,7 +47,7 @@ public class UserController {
         changeProfilePhotoUseCase.changeProfilePhoto(user.getId(), photo);
     }
 
-    @PutMapping("/customize/description")
+    @PatchMapping("/customize/description")
     @Operation(summary = "change description", description = "requisition that update a user description")
     @ApiResponse(responseCode = "200", description = "user saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -58,7 +58,7 @@ public class UserController {
         changeDescriptionUseCase.changeDescription(user.getId(), description);
     }
 
-    @PutMapping("/customize/username")
+    @PatchMapping("/customize/username")
     @Operation(summary = "change username", description = "requisition that update a user username")
     @ApiResponse(responseCode = "200", description = "user saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -69,7 +69,7 @@ public class UserController {
         changeUsernameUseCase.changeUsername(user.getId(), username);
     }
 
-    @PutMapping("/customize/email/confirm/{token}")
+    @PatchMapping("/customize/email/confirm/{token}")
     @Operation(summary = "change email", description = "requisition that validate a token and then update a user email")
     @ApiResponse(responseCode = "200", description = "user saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -80,7 +80,7 @@ public class UserController {
         changeEmailUseCase.changeEmail(user.getId(), token, email);
     }
 
-    @PutMapping("/customize/password/confirm/{token}")
+    @PatchMapping("/customize/password/confirm/{token}")
     @Operation(summary = "change password", description = "requisition that validate a token and then update a user password")
     @ApiResponse(responseCode = "200", description = "user saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -91,7 +91,7 @@ public class UserController {
         changePasswordUseCase.changePassword(user.getId(), token, password);
     }
 
-    @PutMapping("/customize/email/send")
+    @PatchMapping("/customize/email/send")
     @Operation(summary = "send token for email change", description = "requisition that send a token to use in email change")
     @ApiResponse(responseCode = "200", description = "token sended with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -102,7 +102,7 @@ public class UserController {
         startChangeEmailUseCase.startChangeEmail(user.getId());
     }
 
-    @PutMapping("/customize/password/send")
+    @PatchMapping("/customize/password/send")
     @Operation(summary = "send token for password change", description = "requisition that send a token to use in password change")
     @ApiResponse(responseCode = "200", description = "token sended with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")

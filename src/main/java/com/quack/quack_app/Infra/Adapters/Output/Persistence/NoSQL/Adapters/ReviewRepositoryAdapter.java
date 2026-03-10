@@ -6,14 +6,19 @@ import com.quack.quack_app.Domain.ValueObjects.Reviews;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Mappers.NoSQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.ReviewEntity;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Repositories.MongoReviewRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
 public class ReviewRepositoryAdapter implements ReviewRepository {
 
     private final MongoReviewRepository mongoRepository;
@@ -27,11 +32,13 @@ public class ReviewRepositoryAdapter implements ReviewRepository {
     }
 
     @Override
+    @CacheEvict(value = "reviews", key = "#review.reviewId")
     public void saveReview(Review review) {
         mongoRepository.save(noSQLMapper.toEntity(review));
     }
 
     @Override
+    @Cacheable(value = "user_reviews", key = "#id", unless = "#result == null")
     public Reviews getReviews(UUID id) {
         Query query = new Query(Criteria.where("userId").is(id));
 
@@ -45,6 +52,7 @@ public class ReviewRepositoryAdapter implements ReviewRepository {
     }
 
     @Override
+    @Cacheable(value = "reviews", key = "#reviewId", unless = "#result == null")
     public Optional<Review> getReview(UUID review) {
         return mongoRepository.findById(review)
                 .map(noSQLMapper::toDomain);

@@ -51,7 +51,7 @@ public class ReviewsController {
     public void saveReview(@RequestBody DTOSaveReview review) {
         saveReviewUseCase.saveReviews(review);
     }
-    @PutMapping("/{id}/rating_update")
+    @PatchMapping("/{id}/rating_update")
     @Operation(summary = "save review by id", description = "requisition that update a review")
     @ApiResponse(responseCode = "200", description = "review saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -61,7 +61,7 @@ public class ReviewsController {
     public void updateReview(@PathVariable UUID id, @AuthenticationPrincipal UserDetailsImpl user, @RequestBody Rating rating) {
         updateRatingReviewUseCase.updateRatingReview(id, user.getId(), rating);
     }
-    @PutMapping("/{id}/review_update")
+    @PatchMapping("/{id}/review_update")
     @Operation(summary = "save review by id", description = "requisition that update a rating of a review")
     @ApiResponse(responseCode = "200", description = "review saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")

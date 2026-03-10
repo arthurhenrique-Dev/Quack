@@ -85,7 +85,7 @@ public class AuthController {
         String qrCodeUrl = saveModeratorUseCase.saveModerator(dtoSaveModerator);
         return ResponseEntity.status(HttpStatus.CREATED).body(qrCodeUrl);
     }
-    @PostMapping("/check")
+    @PatchMapping("/check")
     @Operation(summary = "2FA check users", description = "requisition that makes a 2FA validation for a user in Quack system")
     @ApiResponse(responseCode = "200", description = "user validated with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -96,7 +96,7 @@ public class AuthController {
         check2FAUseCase.check2FA(id, token);
         return ResponseEntity.ok().build();
     }
-    @PostMapping("/management/check")
+    @PatchMapping("/management/check")
     @Operation(summary = "2FA check moderators", description = "requisition that makes a 2FA validation for a moderator in Quack system")
     @ApiResponse(responseCode = "200", description = "moderator validated with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")

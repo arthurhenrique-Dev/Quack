@@ -1,6 +1,8 @@
 spring:
   application:
     name: quack-app
+  cache:
+    type: redis
 
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/quack_db}

@@ -7,6 +7,8 @@ import com.quack.quack_app.Domain.ValueObjects.Natural;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Mappers.NoSQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Models.GameEntity;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.NoSQL.Repositories.MongoGameRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -59,6 +61,7 @@ public class GameRepositoryAdapter implements GameRepository {
     }
 
     @Override
+    @Cacheable(value = "games", key = "#id", unless = "#result == null")
     public Optional<Game> getGameById(UUID id) {
         if (id == null) return Optional.empty();
 
@@ -135,6 +138,7 @@ public class GameRepositoryAdapter implements GameRepository {
     }
 
     @Override
+    @CacheEvict(value = "games", key = "#game.id")
     public void saveGame(Game game) {
         mongoRepository.save(mapper.toEntity(game));
     }

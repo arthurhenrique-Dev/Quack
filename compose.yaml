@@ -9,10 +9,14 @@ services:
         condition: service_healthy
       mongodb:
         condition: service_started
+      redis:
+        condition: service_started
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://quack_db:5432/quack_db
       - SPRING_DATA_MONGODB_UUID_REPRESENTATION=standard
       - MONGO_HOST=quack_mongo
+      - SPRING_DATA_REDIS_HOST=quack_cache
+      - SPRING_DATA_REDIS_PORT=6379
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
     networks:
@@ -47,9 +51,21 @@ services:
       - quack-network
     volumes:
       - mongo_data:/data/db
+  redis:
+    image: redis:latest
+    container_name: quack_cache
+    ports:
+      - 6379:6379
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    networks:
+      - quack-network
 networks:
   quack-network:
     driver: bridge
 volumes:
   postgres_data:
   mongo_data:
+  redis_data:

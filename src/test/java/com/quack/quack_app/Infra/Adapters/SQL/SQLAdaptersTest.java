@@ -134,7 +134,7 @@ public class SQLAdaptersTest {
 
         @BeforeEach
         void setUp() {
-            adapter = new UserRepositoryAdapter(jpaRepository, aesEncryptor, mapper);
+            adapter = new UserRepositoryAdapter(jpaRepository, mapper);
         }
 
         @Test

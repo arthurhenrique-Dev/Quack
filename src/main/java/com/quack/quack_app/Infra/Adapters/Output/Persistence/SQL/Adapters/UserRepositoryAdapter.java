@@ -9,26 +9,30 @@ import com.quack.quack_app.Domain.ValueObjects.Username;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.SQL.Mappers.SQLMapper;
 import com.quack.quack_app.Infra.Adapters.Output.Persistence.SQL.Repositories.JpaUserRepository;
 import com.quack.quack_app.Infra.Security.Service.AesEncryptor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Component
 public class UserRepositoryAdapter implements UserRepository {
 
     private final JpaUserRepository jpaRepository;
-    private final AesEncryptor aesEncryptor;
     private final SQLMapper mapper;
 
-    public UserRepositoryAdapter(JpaUserRepository jpaRepository, AesEncryptor aesEncryptor, SQLMapper mapper) {
+    public UserRepositoryAdapter(JpaUserRepository jpaRepository, SQLMapper mapper) {
         this.jpaRepository = jpaRepository;
-        this.aesEncryptor = aesEncryptor;
         this.mapper = mapper;
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#user.id")
     public void saveUser(User user) {
         jpaRepository.save(mapper.toEntity(user));
     }
@@ -48,16 +52,19 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id", unless = "#result == null")
     public Optional<User> getUserById(UUID id) {
         return jpaRepository.findById(id).map(mapper::toDomain);
     }
 
     @Override
+    @Cacheable(value = "users", key = "#username.username()", unless = "#result == null")
     public Optional<User> getUserByName(Username username) {
         return jpaRepository.findByUsername(username.username()).map(mapper::toDomain);
     }
 
     @Override
+    @Cacheable(value = "users", key = "#email.email()", unless = "#result == null")
     public Optional<User> getUserByEmail(Email email) {
         return jpaRepository.findByEmail(email.email())
                 .map(mapper::toDomain);

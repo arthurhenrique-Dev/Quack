@@ -27,7 +27,7 @@ public class ModeratorController {
     private final com.quack.quack_app.Application.UseCases.Users.Users.BanUseCase banUseCaseUsers;
     private final DeleteReviewUseCase deleteReviewUseCase;
 
-    @PostMapping("/moderators/{id}/activate")
+    @PatchMapping("/moderators/{id}/activate")
     @Operation(summary = "activate moderator", description = "requisition that makes a moderator active again")
     @ApiResponse(responseCode = "200", description = "moderator activated with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -49,7 +49,7 @@ public class ModeratorController {
         banUseCase.ban(id);
     }
 
-    @PostMapping("/users/{id}/activate")
+    @PatchMapping("/users/{id}/activate")
     @Operation(summary = "activate user", description = "requisition that makes a moderator active a user again")
     @ApiResponse(responseCode = "200", description = "user activated with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -82,7 +82,7 @@ public class ModeratorController {
         deleteReviewUseCase.DeleteReview(idReview, idUser);
     }
 
-    @PutMapping("/customize/email/send")
+    @PatchMapping("/customize/email/send")
     @Operation(summary = "send token for email change", description = "requisition that send a token to use in email change")
     @ApiResponse(responseCode = "200", description = "token sended with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -93,7 +93,7 @@ public class ModeratorController {
         startChangeEmailUseCase.startChangeEmail(moderator.getId());
     }
 
-    @PutMapping("/customize/email/confirm/{token}")
+    @PatchMapping("/customize/email/confirm/{token}")
     @Operation(summary = "change email", description = "requisition that validate a token and then update a moderator email")
     @ApiResponse(responseCode = "200", description = "moderator saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -107,7 +107,7 @@ public class ModeratorController {
         changeEmailUseCase.changeEmail(moderator.getId(), token, email);
     }
 
-    @PutMapping("/customize/password/send")
+    @PatchMapping("/customize/password/send")
     @Operation(summary = "send token for password change", description = "requisition that send a token to use in password change")
     @ApiResponse(responseCode = "200", description = "token sended with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")
@@ -118,7 +118,7 @@ public class ModeratorController {
         startChangePasswordUseCase.startChangePassword(moderator.getId());
     }
 
-    @PutMapping("/customize/password/confirm/{token}")
+    @PatchMapping("/customize/password/confirm/{token}")
     @Operation(summary = "change password", description = "requisition that validate a token and then update a moderator password")
     @ApiResponse(responseCode = "200", description = "moderator saved with sucess")
     @ApiResponse(responseCode = "400", description = "invalid request content")

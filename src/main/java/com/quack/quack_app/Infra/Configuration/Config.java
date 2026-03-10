@@ -42,8 +42,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 public class Config {
 
     @Bean
-    UserRepository userRepository(JpaUserRepository jpaUserRepository, AesEncryptor encryptor, SQLMapper sqlMapper) {
-        return new UserRepositoryAdapter(jpaUserRepository, encryptor, sqlMapper);
+    UserRepository userRepository(JpaUserRepository jpaUserRepository, SQLMapper sqlMapper) {
+        return new UserRepositoryAdapter(jpaUserRepository,sqlMapper);
     }
     @Bean
     ModeratorRepository moderatorRepository(JpaModeratorRepository jpaModeratorRepository, SQLMapper sqlMapper) {
